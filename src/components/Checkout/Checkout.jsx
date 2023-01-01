@@ -1,5 +1,7 @@
 import './Checkout.css'
 
+import { Link } from 'react-router-dom'
+
 export const Checkout = () => {
   return (
     <div className="checkout">
@@ -11,13 +13,17 @@ export const Checkout = () => {
             <span>$54</span>
           </div>
 
-          <button type="button">Eliminar</button>
+          <button type="button">
+            <i className="fas fa-trash-alt" title="Eliminar" />
+          </button>
         </div>
       </div>
 
       <div className="checkout-sidebar">
         <h3>Total a pagar: $10</h3>
-        <button type="button">Continuar pedido</button>
+        <Link to="/checkout/information">
+          <button type="button">Continuar pedido</button>
+        </Link>
       </div>
     </div>
   )
