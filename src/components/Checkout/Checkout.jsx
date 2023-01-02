@@ -1,30 +1,50 @@
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import AppContext from '../../context/AppContext'
+
 import './Checkout.css'
 
-import { Link } from 'react-router-dom'
-
 export const Checkout = () => {
+  const { state, removeToCart } = useContext(AppContext)
+  const { cart } = state
+
+  const handleRemoveToCart = (product) => {
+    removeToCart(product)
+  }
+
+  const handleSumTotal = () => {
+    const reducer = (accumulator, currentValue) =>
+      accumulator + currentValue.price
+    const sum = cart.reduce(reducer, 0)
+    return sum
+  }
+
   return (
     <div className="checkout">
       <div className="checkout-content">
-        <h3>Lista de Pedidos</h3>
-        <div className="checkout-item">
-          <div className="checkout-element">
-            <h4>Item Name</h4>
-            <span>$54</span>
+        {cart.length > 0 ? <h3>Lista de Pedidos:</h3> : <h3>No hay pedidos</h3>}
+
+        {cart.map((item) => (
+          <div className="checkout-item">
+            <div className="checkout-element">
+              <h4>{item.title}</h4>
+              <span>${item.price}</span>
+            </div>
+            <button type="button" onClick={() => handleRemoveToCart(item)}>
+              <i className="fas fa-trash-alt" title="Eliminar" />
+            </button>
           </div>
+        ))}
+      </div>
 
-          <button type="button">
-            <i className="fas fa-trash-alt" title="Eliminar" />
-          </button>
+      {cart.length > 0 && (
+        <div className="checkout-sidebar">
+          <h3>{`Total a pagar: $${handleSumTotal()}`}</h3>
+          <Link to="/checkout/information">
+            <button type="button">Continuar pedido</button>
+          </Link>
         </div>
-      </div>
-
-      <div className="checkout-sidebar">
-        <h3>Total a pagar: $10</h3>
-        <Link to="/checkout/information">
-          <button type="button">Continuar pedido</button>
-        </Link>
-      </div>
+      )}
     </div>
   )
 }
