@@ -25,10 +25,18 @@ const useInitalState = () => {
     })
   }
 
+  const addNewOrder = (payload) => {
+    setState({
+      ...state,
+      orders: [...state.orders, payload],
+    })
+  }
+
   return {
     addToCart,
     addToBuyer,
     removeToCart,
+    addNewOrder,
     state,
   }
 }
