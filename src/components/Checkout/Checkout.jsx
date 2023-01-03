@@ -1,5 +1,7 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
+
 import AppContext from '../../context/AppContext'
 
 import './Checkout.css'
@@ -25,7 +27,7 @@ export const Checkout = () => {
         {cart.length > 0 ? <h3>Lista de Pedidos:</h3> : <h3>No hay pedidos</h3>}
 
         {cart.map((item) => (
-          <div className="checkout-item">
+          <div className="checkout-item" key={uuidv4()}>
             <div className="checkout-element">
               <h4>{item.title}</h4>
               <span>${item.price}</span>
