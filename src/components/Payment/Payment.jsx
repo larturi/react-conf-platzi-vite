@@ -6,6 +6,7 @@ import { PayPalButton } from 'react-paypal-button-v2'
 import AppContext from '../../context/AppContext'
 
 import './Payment.css'
+import { handleSumTotal } from '../../utils/sumTotalOrder'
 
 export const Payment = () => {
   const { state } = useContext(AppContext)
@@ -24,13 +25,6 @@ export const Payment = () => {
   const buttonStyles = {
     layout: 'vertical',
     shape: 'rect',
-  }
-
-  const handleSumTotal = () => {
-    const reducer = (accumulator, currentValue) =>
-      accumulator + currentValue.price
-    const sum = cart.reduce(reducer, 0)
-    return sum
   }
 
   const handlePaymentSuccess = (data) => {
@@ -62,7 +56,7 @@ export const Payment = () => {
           <PayPalButton
             paypalOptions={paypalOptions}
             buttonStyles={buttonStyles}
-            amount={handleSumTotal()}
+            amount={handleSumTotal(cart)}
             onPaymentStart={() => console.log('Iniciando pago')}
             onPaymentSuccess={(data) => handlePaymentSuccess(data)}
             onPaymentError={(error) => console.log(error)}
