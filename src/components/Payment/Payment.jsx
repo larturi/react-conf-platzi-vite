@@ -15,7 +15,6 @@ export const Payment = () => {
   const navigate = useNavigate()
 
   const handlePaymentSuccess = (details) => {
-    console.log(details)
     if (details.status === 'COMPLETED') {
       const newOrder = {
         buyer,

@@ -5,6 +5,11 @@
   display: grid;
 }
 
+.payment-button {
+  margin-top: 30px;
+  ;
+}
+
 .payment-back {
   margin: 10px 0 0 0;
 }
