@@ -2,38 +2,25 @@
 
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PayPalButton } from 'react-paypal-button-v2'
+import { PayPalButtons } from '@paypal/react-paypal-js'
 import AppContext from '../../context/AppContext'
 
 import './Payment.css'
 import { handleSumTotal } from '../../utils/sumTotalOrder'
 
 export const Payment = () => {
-  const { state } = useContext(AppContext)
-  const { cart, buyer, addNewOrder } = state
-
-  console.log(import.meta.env.VITE_PAYPAL_CLIENTID)
+  const { state, addNewOrder } = useContext(AppContext)
+  const { cart, buyer } = state
 
   const navigate = useNavigate()
 
-  const paypalOptions = {
-    clientId: import.meta.env.PAYPAL_CLIENTID || '',
-    intent: 'capture',
-    currency: 'USD',
-  }
-
-  const buttonStyles = {
-    layout: 'vertical',
-    shape: 'rect',
-  }
-
-  const handlePaymentSuccess = (data) => {
-    console.log(import.meta.env.PAYPAL_CLIENTID)
-    if (data.status === 'COMPLETED') {
+  const handlePaymentSuccess = (details) => {
+    console.log(details)
+    if (details.status === 'COMPLETED') {
       const newOrder = {
         buyer,
         products: cart,
-        payment: data,
+        payment: details,
       }
       addNewOrder(newOrder)
       navigate('/checkout/success')
@@ -43,24 +30,33 @@ export const Payment = () => {
   return (
     <div className="payment">
       <div className="payment-content">
-        <h3>Resumen del Pedido</h3>
+        <h3>Resument del pedido:</h3>
         {cart.map((item) => (
-          <div className="payment-item" key={item.id}>
+          <div className="payment-item" key={item.title}>
             <div className="payment-element">
               <h4>{item.title}</h4>
-              <span>${item.price}</span>
+              <span>$ {item.price}</span>
             </div>
           </div>
         ))}
         <div className="payment-button">
-          <PayPalButton
-            paypalOptions={paypalOptions}
-            buttonStyles={buttonStyles}
-            amount={handleSumTotal(cart)}
-            onPaymentStart={() => console.log('Iniciando pago')}
-            onPaymentSuccess={(data) => handlePaymentSuccess(data)}
-            onPaymentError={(error) => console.log(error)}
-            onPaymentCancel={(data) => console.log(data)}
+          <PayPalButtons
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: handleSumTotal(cart).toString(),
+                    },
+                  },
+                ],
+              })
+            }}
+            onApprove={(data, actions) => {
+              return actions.order.capture().then((details) => {
+                handlePaymentSuccess(details)
+              })
+            }}
           />
         </div>
       </div>
