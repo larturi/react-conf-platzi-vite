@@ -1,12 +1,17 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppContext from '../../context/AppContext'
 
 import './Header.css'
 
 export const Header = () => {
-  const { state } = useContext(AppContext)
+  const { state, setCartFromLocalStorage } = useContext(AppContext)
   const { cart } = state
+
+  useEffect(() => {
+    const localStorageCart = JSON.parse(localStorage.getItem('cart'))
+    if (localStorageCart.length > 0) setCartFromLocalStorage(localStorageCart)
+  }, [])
 
   return (
     <div className="header">

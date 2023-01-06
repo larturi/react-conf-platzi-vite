@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import AppContext from '../../context/AppContext'
 import { Product } from '../Product/Product'
 
@@ -6,7 +6,11 @@ import './Products.css'
 
 export const Products = () => {
   const { state, addToCart } = useContext(AppContext)
-  const { products } = state
+  const { products, cart } = state
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }, [cart])
 
   const handleAddToCart = (product) => {
     addToCart(product)
