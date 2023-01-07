@@ -7,6 +7,7 @@ import AppContext from '../../context/AppContext'
 
 import './Payment.css'
 import { handleSumTotal } from '../../utils/sumTotalOrder'
+import { SEO } from '../Seo/Seo'
 
 export const Payment = () => {
   const { state, addNewOrder } = useContext(AppContext)
@@ -27,38 +28,42 @@ export const Payment = () => {
   }
 
   return (
-    <div className="payment">
-      <div className="payment-content">
-        <h3>Resument del pedido:</h3>
-        {cart.map((item) => (
-          <div className="payment-item" key={item.title}>
-            <div className="payment-element">
-              <h4>{item.title}</h4>
-              <span>$ {item.price}</span>
+    <>
+      <SEO title="Platzi Conf Merch - Payment" />
+
+      <div className="payment">
+        <div className="payment-content">
+          <h3>Resument del pedido:</h3>
+          {cart.map((item) => (
+            <div className="payment-item" key={item.title}>
+              <div className="payment-element">
+                <h4>{item.title}</h4>
+                <span>$ {item.price}</span>
+              </div>
             </div>
-          </div>
-        ))}
-        <div className="payment-button">
-          <PayPalButtons
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: {
-                      value: handleSumTotal(cart).toString(),
+          ))}
+          <div className="payment-button">
+            <PayPalButtons
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: handleSumTotal(cart).toString(),
+                      },
                     },
-                  },
-                ],
-              })
-            }}
-            onApprove={(data, actions) => {
-              return actions.order.capture().then((details) => {
-                handlePaymentSuccess(details)
-              })
-            }}
-          />
+                  ],
+                })
+              }}
+              onApprove={(data, actions) => {
+                return actions.order.capture().then((details) => {
+                  handlePaymentSuccess(details)
+                })
+              }}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

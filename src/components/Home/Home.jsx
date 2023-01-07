@@ -1,6 +1,14 @@
+/* eslint-disable max-len */
+
 import initialState from '../../initialState'
 import { Products } from '../Products/Products'
+import { SEO } from '../Seo/Seo'
 
 export const Home = () => {
-  return <Products products={initialState.products} />
+  return (
+    <>
+      <SEO title="Platzi Conf Merch - Products" />
+      <Products products={initialState.products} />
+    </>
+  )
 }

@@ -20,7 +20,9 @@ const App = () => {
   return (
     <AppContext.Provider value={initialState}>
       <PayPalScriptProvider
-        options={{ 'client-id': import.meta.env.VITE_PAYPAL_CLIENTID || '' }}
+        options={{
+          'client-id': import.meta.env.VITE_PAYPAL_CLIENTID || '',
+        }}
       >
         <BrowserRouter>
           <Layout>
