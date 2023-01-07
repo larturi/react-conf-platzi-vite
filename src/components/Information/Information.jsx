@@ -1,6 +1,7 @@
-import { useContext, useRef } from 'react'
-
+import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 import AppContext from '../../context/AppContext'
 import { SEO } from '../Seo/Seo'
 
@@ -9,26 +10,50 @@ import './Information.css'
 export const Information = () => {
   const { state, addToBuyer } = useContext(AppContext)
   const { cart } = state
-  const form = useRef(null)
   const navigate = useNavigate()
 
-  const handleSubmit = () => {
-    const formData = new FormData(form.current)
-
-    const buyer = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      address: formData.get('address'),
-      country: formData.get('country'),
-      state: formData.get('state'),
-      city: formData.get('city'),
-      cp: formData.get('cp'),
-    }
-
-    addToBuyer(buyer)
-    navigate('/checkout/payment')
+  const validationSchema = () => {
+    return Yup.object({
+      name: Yup.string().required('Campo obligatorio'),
+      email: Yup.string()
+        .email('Por favor ingresa un email válido')
+        .required('Campo obligatorio'),
+      phone: Yup.string().required('Campo obligatorio'),
+      address: Yup.string().required('Campo obligatorio'),
+      country: Yup.string().required('Campo obligatorio'),
+      state: Yup.string().required('Campo obligatorio'),
+      city: Yup.string().required('Campo obligatorio'),
+      cp: Yup.string().required('Campo obligatorio'),
+    })
   }
+
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      country: '',
+      state: '',
+      city: '',
+      cp: '',
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      const buyer = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        country: values.country,
+        state: values.state,
+        city: values.city,
+        cp: values.cp,
+      }
+      addToBuyer(buyer)
+      navigate('/checkout/payment')
+    },
+  })
 
   return (
     <>
@@ -40,33 +65,106 @@ export const Information = () => {
             <h2>Información de contacto</h2>
           </div>
 
-          <div className="information-form">
-            <form ref={form}>
-              <input type="text" placeholder="Nombre Completo" name="name" />
+          <form onSubmit={formik.handleSubmit}>
+            <div className="information-form">
+              {/* Name */}
               <input
+                id="name"
                 type="text"
-                placeholder="Correo Electronico"
-                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
               />
-              <input type="text" placeholder="Telefono" name="phone" />
-              <input type="text" placeholder="Direccion" name="address" />
-              <input type="text" placeholder="Pais Completo" name="country" />
-              <input type="text" placeholder="Provincia" name="state" />
-              <input type="text" placeholder="Ciudad" name="city" />
-              <input type="text" placeholder="Codigo Postal" name="cp" />
-            </form>
-          </div>
-
-          <div className="information-buttons">
-            <div className="information-back">
-              <Link to="/checkout">Regresar</Link>
+              {formik.touched.name && formik.errors.name ? (
+                <div className="errorInputForm">{formik.errors.name}</div>
+              ) : null}
+              {/* Email */}
+              <input
+                id="email"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="errorInputForm">{formik.errors.email}</div>
+              ) : null}
+              {/* Phone */}
+              <input
+                id="phone"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.phone}
+              />
+              {formik.touched.phone && formik.errors.phone ? (
+                <div className="errorInputForm">{formik.errors.phone}</div>
+              ) : null}
+              {/* Address */}
+              <input
+                id="address"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.address}
+              />
+              {formik.touched.address && formik.errors.address ? (
+                <div className="errorInputForm">{formik.errors.address}</div>
+              ) : null}{' '}
+              {/* Country */}
+              <input
+                id="country"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.country}
+              />
+              {formik.touched.country && formik.errors.country ? (
+                <div className="errorInputForm">{formik.errors.country}</div>
+              ) : null}
+              {/* State */}
+              <input
+                id="state"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.state}
+              />
+              {formik.touched.state && formik.errors.state ? (
+                <div className="errorInputForm">{formik.errors.state}</div>
+              ) : null}{' '}
+              {/* City */}
+              <input
+                id="city"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.city}
+              />
+              {formik.touched.city && formik.errors.city ? (
+                <div className="errorInputForm">{formik.errors.city}</div>
+              ) : null}{' '}
+              {/* CP */}
+              <input
+                id="cp"
+                type="text"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.cp}
+              />
+              {formik.touched.cp && formik.errors.cp ? (
+                <div className="errorInputForm">{formik.errors.cp}</div>
+              ) : null}{' '}
             </div>
-            <div className="information-next">
-              <button type="button" onClick={handleSubmit}>
-                Pagar
-              </button>
+            <div className="information-buttons">
+              <div className="information-back">
+                <Link to="/checkout">Regresar</Link>
+              </div>
+              <div className="information-next">
+                <button type="submit">Pagar</button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="information-sidebar">

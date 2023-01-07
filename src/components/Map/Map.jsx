@@ -14,10 +14,6 @@ const ChartMap = ({ address }) => {
     getLatLng(address).then((position) => setPosition(position))
   }, [])
 
-  useEffect(() => {
-    console.log(position)
-  }, [position])
-
   return (
     position && (
       <MapContainer center={position} zoom={13}>
