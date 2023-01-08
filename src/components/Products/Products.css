@@ -55,3 +55,21 @@
 .products-item button:hover {
   background-color: rgba(39, 44, 49, 0.06);
 }
+
+@media (max-width: 768px) {
+  .products-items {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1.5rem;
+    grid-row-gap: 1.5em;
+    display: grid;
+  }
+}
+
+@media (max-width: 576px) {
+  .products-items {
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 1.5rem;
+    grid-row-gap: 1.5em;
+    display: grid;
+  }
+}
