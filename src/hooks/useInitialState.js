@@ -39,11 +39,25 @@ const useInitalState = () => {
     })
   }
 
+  const incrementProductQuantity = (payload) => {
+    const product = state.cart.find((product) => {
+      return product.id === payload
+    })
+    if (product) {
+      product.quantity += 1
+    }
+
+    setState({
+      ...state,
+    })
+  }
+
   return {
     addToCart,
     addToBuyer,
     removeToCart,
     addNewOrder,
+    incrementProductQuantity,
     setCartFromLocalStorage,
     state,
   }

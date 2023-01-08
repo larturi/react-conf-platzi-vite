@@ -31,8 +31,10 @@ export const Checkout = () => {
           {cart.map((item) => (
             <div className="checkout-item" key={uuidv4()}>
               <div className="checkout-element">
-                <h4>{item.title}</h4>
-                <span>${item.price}</span>
+                <h4>
+                  {item.title} ({item.quantity})
+                </h4>
+                <span>${item.price * item.quantity}</span>
               </div>
               <button type="button" onClick={() => handleRemoveToCart(item)}>
                 <i className="fas fa-trash-alt" title="Eliminar" />

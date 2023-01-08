@@ -6,6 +6,7 @@ import AppContext from '../../context/AppContext'
 import { SEO } from '../Seo/Seo'
 
 import './Information.css'
+import { handleSumTotal } from '../../utils/sumTotalOrder'
 
 export const Information = () => {
   const { state, addToBuyer } = useContext(AppContext)
@@ -172,11 +173,20 @@ export const Information = () => {
           {cart.map((item) => (
             <div className="information-item" key={item.id}>
               <div className="information-element">
-                <h4>{item.title}</h4>
-                <span>${item.price}</span>
+                <h4>
+                  {item.title} ({item.quantity})
+                </h4>
+                <span>${item.price * item.quantity}</span>
               </div>
             </div>
           ))}
+
+          <div className="information-item information-item-last" key="last">
+            <div className="information-element">
+              <h4>Total:</h4>
+              <span>${handleSumTotal(cart)}</span>
+            </div>
+          </div>
         </div>
       </div>
     </>

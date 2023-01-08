@@ -37,11 +37,21 @@ export const Payment = () => {
           {cart.map((item) => (
             <div className="payment-item" key={item.title}>
               <div className="payment-element">
-                <h4>{item.title}</h4>
-                <span>$ {item.price}</span>
+                <h4>
+                  {item.title} ({item.quantity})
+                </h4>
+                <span>$ {item.price * item.quantity}</span>
               </div>
             </div>
           ))}
+
+          <div className="information-item information-item-last" key="last">
+            <div className="information-element">
+              <h4>Total:</h4>
+              <span>${handleSumTotal(cart)}</span>
+            </div>
+          </div>
+
           <div className="payment-button">
             <PayPalButtons
               createOrder={(data, actions) => {
